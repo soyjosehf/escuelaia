@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academia de IA - Tu Aventura en el Mundo de la Inteligencia Artificial</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px; /* Añadimos un padding general para evitar que el contenido se pegue a los bordes en pantallas pequeñas */
+        }
+        main {
+            max-width: 800px;
+            width: 100%; /* Ocupa todo el ancho disponible en pantallas pequeñas */
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px; /* Ajustamos el padding para dispositivos pequeños */
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.5s ease;
+        }
+        h1, h2, h3 {
+            color: #4a4a4a;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-size: 2em; /* Tamaño de fuente relativo que se adapta mejor en diferentes dispositivos */
+            margin-top: 0;
+        }
+
+        /* Barra de progreso de puntuación */
+        .progress-bar {
+            width: 100%;
+            background-color: #e0e0e0;
+            padding: 3px;
+            border-radius: 15px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, .2);
+            margin-bottom: 20px;
+        }
+        .progress {
+            display: block;
+            width: 0%;
+            height: 22px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            transition: width 0.5s ease-in-out;
+        }
+
+        /* Barra de progreso de energía digital */
+        .energy-progress-bar {
+            width: 100%;
+            background-color: #ffcccb;
+            padding: 3px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+        .energy-progress {
+            display: block;
+            width: 0%;
+            height: 22px;
+            background: linear-gradient(90deg, #ff4b4b 0%, #ff7575 100%);
+            border-radius: 12px;
+            transition: width 0.5s ease-in-out;
+        }
+
+        /* Estilos de los botones */
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px; /* Ajustamos el padding */
+            margin-top: 15px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Estilo del formulario */
+        form {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        form input {
+            padding: 12px;
+            font-size: 1em;
+            width: 90%; /* Ajustamos el ancho para pantallas más pequeñas */
+            max-width: 500px; /* Establecemos un ancho máximo */
+            border: 2px solid #667eea;
+            border-radius: 25px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        form input:focus {
+            border-color: #764ba2;
+            box-shadow: 0 0 10px rgba(118, 75, 162, 0.3);
+        }
+
+        /* Estilo de la tarjeta de lección */
+        .lesson-card {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+            
+        }
+         .quiz {
+            background-color: #decbb6;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+        /*estilo para la imagen responsiva*/
+        .responsive-image {
+            max-width: 50%; /* La imagen no será más ancha que su contenedor */
+            height: auto;    /* La altura se ajustará automáticamente */
+            display: block;  /* Elimina espacios en blanco alrededor de la imagen */
+            margin: 0 auto;  /* Centra la imagen horizontalmente */
+        }
+
+        /* Estilo del mensaje final */
+        #finalMessage {
+            font-size: 1.2em; /* Ajuste para pantallas pequeñas */
+            text-align: center;
+            margin-top: 20px;
+            color: #4a4a4a;
+        }
+        #result, #score, #level, #energy, #timer, #streakCounter {
+            font-size: 1.2em;
+            text-align: center;
+            margin-top: 20px;
+            color: #4a4a4a;
+        }
+
+        /* Estilos para formatear el contenido de las lecciones */
+        .lesson-content strong {
+            color: #333;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        .lesson-content em {
+            color: #555;
+            font-style: italic;
+            
+        }
+
+        .lesson-content ul {
+            padding-left: 20px;
+        }
+
+        .lesson-content ul li {
+            margin-bottom: 10px;
+        }
+
+        /* Media Queries para hacer el diseño responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em; /* Tamaño de fuente más pequeño en pantallas medianas */
+            }
+
+            main {
+                padding: 15px; /* Reducimos el padding */
+            }
+
+            button {
+                padding: 8px; /* Reducimos el padding de los botones */
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5em; /* Tamaño de fuente más pequeño en pantallas pequeñas */
+            }
+
+            .progress {
+                height: 18px; /* Barra de progreso más pequeña */
+            }
+
+            .energy-progress {
+                height: 18px; /* Barra de progreso de energía más pequeña */
+            }
+
+            button {
+                font-size: 0.9em; /* Tamaño de fuente más pequeño para botones */
+                padding: 8px; /* Reducimos el padding */
+            }
+
+            form input {
+                font-size: 0.9em; /* Reducimos el tamaño de fuente en el input */
+                padding: 10px;
+            }
+            
+        }
+       /* Asegurar que el icono esté centrado */
+    .fa-icon {
+        font-size: 5rem; /* Tamaño del icono */
+        display: block; /* Esto asegura que se comporte como un bloque y se pueda centrar */
+        margin: 0 auto; /* Esto lo centra horizontalmente */
+        text-align: center;
+    }
+    </style>
+</head>
+<body>
+    <main>
+        <header>
+            <h1>Academia de IA: Tu Aventura Digital</h1>
+            <p id="epicMeaning" style="text-align: center; font-style: italic;">Embárcate en un viaje épico para convertirte en un maestro de la Inteligencia Artificial y salvar el futuro digital.</p>
+        </header>
+
+        <!-- Formulario para ingresar el nombre del usuario -->
+        <form id="nameForm">
+            <input type="text" id="playerName" placeholder="Tu nombre de Héroe Digital" aria-label="Nombre de Héroe Digital">
+            <button id="startAdventure">Iniciar Aventura</button>
+        </form>
+
+        <!-- Contenedor que muestra la aventura una vez que el usuario ingresa su nombre -->
+        <section id="adventureContainer" style="display:none;">
+            <!-- Barra de progreso de la puntuación -->
+            <div class="progress-bar">
+                <span class="progress" id="progressBar"></span>
+            </div>
+
+            <!-- Barra de progreso de la energía digital -->
+            <div class="energy-progress-bar">
+                <span class="energy-progress" id="energyProgressBar"></span>
+            </div>
+
+            <div id="score">Puntuación: <span id="userScore">0</span></div>
+            <div id="energy">Energía Digital: <span id="userEnergy">0</span>%</div>
+
+            <!-- Tarjeta de la lección -->
+            <article class="lesson-card">
+                <h3><span id="lessonTitle">1</span></h3>
+                <div id="lessonContent" class="lesson-content"></div>
+                <button id="nextLesson">Siguiente</button>
+            </article>
+
+            <section class="quiz" style="display:none;">
+                <h3>Desafío Final de IA</h3>
+                <div id="question"></div>
+                <button id="answerA" onclick="checkAnswer('A')">A</button>
+                <button id="answerB" onclick="checkAnswer('B')">B</button>
+                <button id="answerC" onclick="checkAnswer('C')">C</button>
+                <div id="result"></div>
+                <div id="timer">Tiempo restante: <span id="timeLeft"></span> segundos</div>
+            </section>
+
+            <!-- Mensaje final -->
+            <div id="finalMessage"></div>
+        </section>
+    </main>
+
+    <script>
+        let energy = 0; // Inicializa la energía digital en 0%
+        let score = 0;
+        let currentLesson = 0;
+        let currentQuestion = 0;
+        let timer;
+        let timeLimit = 25; // Tiempo límite en segundos
+        let playerName="";
+
+        // Las lecciones ahora pueden contener formato HTML para personalizar el contenido
+        const lessons = [
+        { 
+                title: "Un pantallazo al futuro que está aquí", 
+                content: `
+                    <h4>Deja rienda suelta a tu imaginación </h4>
+                    <div style="text-align: center;">
+                        <i class="fas fa-brain fa-icon"></i>
+                    </div>
+                    <p> Imagina un mundo donde la <strong>inteligencia artificial (IA)</strong>
+                        ayuda a resolver algunos de los problemas más complejos de la humanidad.</p> 
+                    <p>   Un lugar donde los asistentes virtuales predicen nuestras necesidades,
+                         los autos se conducen solos y los algoritmos detectan enfermedades antes de que aparezcan los síntomas.</p>
+                     <p> Este mundo no es un sueño lejano; es nuestro presente.</p> 
+                     <p> Y te voy a contar cómo estas herramientas revolucionarias funcionan y cómo podes usarlas.</p>
+                `
+            },
+            { 
+                title: "El despertar de la IA", 
+                content: `
+                <p>La historia de la IA comenzó oficialmente en 1956, durante la Conferencia de Dartmouth, 
+                    donde científicos visionarios discutieron la posibilidad de crear máquinas que piensen como humanos.</p> 
+                <p>Aunque las primeras incursiones eran rudimentarias, sentaron las bases para lo que vendría después.</p>
+                <p>Hoy, la IA está en todas partes: desde los motores de búsqueda que usamos diariamente 
+                    hasta las recomendaciones de películas en nuestras plataformas de streaming favoritas.</p>
+                <p>El boom sucedió en el año 2022,  con introducción de ChatGPT, 
+                    que con una interfaz sencilla de chat, permitió escribir y comunicarnos con la inteligencia artificial similar
+                    a como lo hacemos con nuestros amigos en WhatsApp.</p>
+                <p>De pronto tenemos un asistente/amigo virtual que escucha nuestras instrucciones y genera respuestas a partir de ellas.</p>
+                `
+            },
+            { 
+                title: "Explorando el Arsenal de Herramientas de IA", 
+                content: `
+                    <h4>Herramientas de chat</h4>
+                    <img src="https://media.canva.com/v2/image-resize/format:PNG/height:827/quality:100/uri:s3%3A%2F%2Fmedia-private.canva.com%2FmcE1g%2FMAGQxHmcE1g%2F1%2Fp.png/watermark:F/width:1298?csig=AAAAAAAAAAAAAAAAAAAAANlSisC87MunNLPMtPWnqnc1AmkVS8piReD8s1otgW9Q&exp=1729391079&osig=AAAAAAAAAAAAAAAAAAAAACy5rfwUfR5o_b_0_ZzIw2WDkCFIUxvuLHkwGHbw6J54&signer=media-rpc&x-canva-quality=screen_2x" alt="chatgpt de OpenAI"  class="responsive-image">
+                    <a href="https://chatgpt.com" target="_blank">https://chatgpt.com</a>
+                    <p>Desarrollado por OpenAI, es la herramienta más famosa, 
+                        de procesamiento de lenguaje natural que puede entender y generar texto de manera coherente.</p>
+                    <p>¿Te gustaría tener un asistente siempre disponible para ayudarte con cualquier tarea?.</p> 
+                    <p> Desde planificar tu día hasta resolver problemas complejos en el trabajo.
+                        Así es ChatGPT, que te permite “dialogar” con la inteligencia artificial 
+                        transformando la manera en que interactuamos con la tecnología.</p>
+                    <p> Es útil en aplicaciones que van desde chatbots hasta creación de contenido. 
+                        Empresas como Duolingo utilizan ChatGPT para ofrecer respuestas personalizadas 
+                        y mejorar la experiencia del usuario en tiempo real.</p>
+                `
+            }
+            ,
+            { 
+                title: "Otras herramientas de chat que le dan pelea a ChatGPT son 👍", 
+                content: `
+                        <ul>
+                            <li><a href="https://claude.ai" target="_blank">https://claude.ai</a></li>
+                            <li><a href="https://gemini.google.com" target="_blank">https://gemini.google.com</a></li>
+                            <li>y herramientas del mundo open source como  <a href="https://huggingface.co/chat/" target="_blank">https://huggingface.co/chat/</a></li>
+                        </ul>
+                    <p>y la reciente irrupción en la mensajería instantánea de Meta AI, que integra a la su modelo más reciente, Llama 3, en WhatsApp e Instagram.</p>
+                     <p>También la podés probar en <a href="https://www.meta.ai/" target="_blank">https://www.meta.ai </a></p>
+                `
+            }
+            ,
+            { 
+                title: "¿Para qué la puedo usar?", 
+                content: `
+                    <p><strong>En la Vida Diaria:</strong></p>
+                    <ul>
+                        <li><strong>Organización Personal:</strong> puede ayudarte a estructurar tu día, recordarte citas importantes y hacer listas de tareas.</li>
+                        <li><strong>Asesoramiento:</strong> Desde consejos sobre recetas de cocina hasta recomendaciones de libros o películas.</li>
+                        <li><strong>Aprendizaje y Educación:</strong> ¿Necesitás entender un concepto difícil o aprender algo nuevo? Puede explicarte temas complejos de manera sencilla y accesible.</li>
+                    </ul>
+                    <p><strong>En la Empresa:</strong></p>
+                    <ul>
+                        <li><strong>Atención al Cliente:</strong> Utilizando ChatGPT  en un chatbot, responde consultas frecuentes, ofrece soporte técnico y mejora la experiencia del cliente.</li>
+                        <li><strong>Redacción de Contenidos:</strong>Te ayuda a crear textos claros y persuasivos, desde correos electrónicos hasta informes.</li>
+                        <li><strong>Análisis de Datos:</strong> Puede interpretar datos y ofrecer insights valiosos para la toma de decisiones.</li>
+                    </ul>
+                `
+            },
+            { 
+                title: "Prompts", 
+                content: `
+                    <p><strong>Un prompt es una instrucción que le das a la inteligencia artificial para que realice una tarea. 
+                        Y que dispara una respuesta.</strong></p>
+                    `
+            },
+            { 
+                title: "Lista de Prompts Potentes", 
+                content: `
+                    <p><strong>Vida Diaria</strong></p>
+                    <ol>
+                        <li><strong>Organización Personal</strong></li>
+                            <ul>
+                                <li><strong>Situación:</strong> Es lunes por la mañana y tienes una semana llena de compromisos.</li>
+                                <li><strong>Prompt:</strong> "Actúa como mi asistente personal y genera mi calendario del día empezando a las 7 am y terminando a las 11 pm. Debe incluir una hora de ejercicio, dos sesiones de trabajo de 4 horas cada una, tiempo para 3 comidas, estudio y tiempo de ocio."</li>
+                            </ul>
+                        <li><strong>Recetas de Cocina</strong></li>
+                            <ul>    
+                                <li><strong>Situación:</strong> Quieres preparar una cena especial pero no sabes qué cocinar.</li>
+                                <li><strong>Prompt:</strong> "Recomiéndame una receta fácil y deliciosa para una cena romántica. Tengo pollo, tomates y espinacas en casa."</li>
+                            </ul>
+                        
+                        <li><strong>Recomendaciones de Libros</strong></li>
+                           <ul>
+                                <li><strong>Situación:</strong> Estás buscando algo nuevo para leer.</li>
+                                <li><strong>Prompt:</strong> "Recomiéndame un libro de ciencia ficción que sea emocionante y tenga buenas críticas."</li>
+                            </ul>
+
+                    </ol> `
+            },
+            { 
+                title: "Lista de Prompts Potentes", 
+                content: `
+                    <p><strong>Empresa</strong></p>
+                    <ol>
+                        <li><strong>Redacción de Correos Electrónicos</strong></li>
+                            <ul>
+                                <li><strong>Situación:</strong>Necesitas enviar un correo importante a un cliente potencial..</li>
+                                <li><strong>Prompt:</strong>  "Redacta un correo profesional para presentar nuestros servicios a un cliente [potencial].". tip: Describan las características del cliente potencial</li>
+                            </ul>
+                        <li><strong>Análisis de Datos</strong></li>
+                            <ul>    
+                                <li><strong>Situación:</strong> Has recibido un informe de ventas y necesitas extraer conclusiones.</li>
+                                <li><strong>Prompt:</strong>  "Analiza este informe de ventas y dame un resumen de los puntos clave y recomendaciones."</li>
+                            </ul>
+                        <li><strong>Planificación de Proyectos</strong></li>
+                            <ul>    
+                                <li><strong>Situación:</strong> Tienes un nuevo proyecto y necesitas organizar las tareas.</li>
+                                <li><strong>Prompt:</strong>  "Ayúdame a crear un plan de proyecto detallado para el lanzamiento de nuestro nuevo producto."</li>
+                            </ul>
+                        <li><strong>Marketing y Publicidad</strong></li>
+                            <ul>    
+                                <li><strong>Situación:</strong>  Estás planificando una nueva campaña de marketing.</li>
+                                <li><strong>Prompt:</strong>  "Genera ideas creativas para nuestra próxima campaña de marketing enfocada en jóvenes de 18 a 25 años."</li>
+                            </ul>
+                    </ol> `
+            },
+            { 
+                title: "TIPS", 
+                content: `
+                <H4>TIP 1: Para mejorar las respuestas que te dá, le puedes pedir que actúe como un experto en el área específica.</H4>
+                <P>Quiero que actúes como [rol experto]. [Consulta/problema que le quieres plantear].</P>
+                <P><strong>Ejemplo:</strong>
+                    <ul>
+                        <li>Quiero que actúes como mi profesor de inglés de nivel intermedio. Hazme una pregunta en inglés, espera a que responda y luego pregúntame otra pregunta. Cuando cometa algún error, por favor corrígeme y dame retroalimentación </li>
+                    </ul>
+                <p><stong>Ejemplo 2:</stong></p>
+                    <ul>
+                        <li>Quiero que actúes como entrevistador. Yo seré el candidato y tú me harás las preguntas de la entrevista para el cargo de Programador/a de software. Quiero que solo respondas como el entrevistador. No escribas toda la conversación de una vez. Solo quiero que hagas la entrevista conmigo. Hazme las preguntas y espera mis respuestas. No escribas explicaciones. Hazme las preguntas una por una, como lo hace un entrevistador, y espera mis respuestas. Mi primera frase es "Hola". </li>
+                    </ul>
+                     `
+            },
+            { 
+                title: "TIPS", 
+                content: `
+                <H4>TIP 2: La inteligencia artificial, en algunas ocasiones se equivoca, por lo cual siempre, (y lo digo serio), coteja la información con otras fuentes. Quizá escuchaste alguna vez decir que la inteligencia artificial “Alucina”, al referirse a esta situación.</H4>
+                <P>Es importante refinar la interacción con el chat, repreguntando. 
+                    <strong>Nunca te quedes con la primera respuesta que te da</strong>. 
+                    Vuelve a preguntarle y sigue interactuando hasta que estés totalmente satisfecho y seguro con la respuesta.</p>
+                <p>Las posibilidades son infinitas. Puedes  tener un experto en cada campo al alcance de tus dedos, 
+                    listo para ayudarte a superar cualquier desafío para mejorar tu vida diaria y profesional.</p>
+                     `
+            },
+            { 
+                title: "Historia de Éxito", 
+                content: `
+                    <P><strong>Duolingo</strong>, una plataforma de aprendizaje de idiomas, ha integrado ChatGPT para personalizar la experiencia del aprendizaje
+                         y ofrecer respuestas inmediatas y personalizadas a las preguntas de los usuarios.</p>
+                    <p> Esto ha mejorado significativamente la retención de usuarios y la satisfacción del cliente.</p>
+                    <p>Así mismo trabaja en el desarrollo de su propia IA,
+                    <a href="https://blog.duolingo.com/learning-how-to-help-you-learn-introducing-birdbrain/" target="_blank">un modelo de IA llamado Birdbrain </a> </p>
+                
+                     `
+            },
+            { 
+                title: "Creación de Imágenes y Videos", 
+                content: `
+                <p><strong>DALL-E</strong> desarrollado por OpenAI, es un modelo de IA que puede generar imágenes a partir de descripciones textuales.</p>
+                <p> Imagina pedirle a una IA que cree una imagen de "un gato espacial con un casco de astronauta" 
+                    y obtener resultados sorprendentes y detallados.</p>
+                <p>DALL-E permite a artistas, diseñadores y creativos explorar nuevas fronteras de la imaginación.</p>
+                <p>DALL-E se encuentra integrado dentro de ChatGPT y se lo puede acceder directamente desde ahí pidiendo que “crea una imagen [describe la imagen que quieres crear]”</p>
+                    `
+            },
+            { 
+                title: "Creación de Imágenes y Videos", 
+                content: `
+                <p><strong>MidJourney</strong> es otra herramienta popular que se especializa en generar arte digital a partir de texto.</p>
+                <p>Los artistas pueden crear imágenes impresionantes simplemente describiendo lo que quieren ver.</p>
+                <p> Esta herramienta es ampliamente utilizada en la industria creativa para visualizar conceptos que serían difíciles de ilustrar manualmente.</p>
+                <p>La forma usual de comenzar a usarlo es a través de su discord  <a href="https://discord.gg/midjourney" target="_blank">https://discord.gg/midjourney </a></p>
+                    `
+            },
+            { 
+                title: "Historia de Éxito", 
+                content: `
+                 <p>hay una variedad de artistas que están revolucionando las redes sociales con la creación de imágenes y videos con IA.</p>
+                 <p> Entre ellos se destaca por ejemplo el canal de YouTube <a href="https://www.youtube.com/@abandonedfilms" target="_blank">Abandoned Films</a> 
+                    que crea secuencias de video de películas 
+                    utilizando herramientas como <a href="https://discord.gg/midjourney" target="_blank">MidJourney </a>,
+                     <a href="https://elevenlabs.io/" target="_blank">elevenlabs </a>
+                    <a href="https://runwayml.com/" target="_blank">y runway </a>.</p>
+                    `
+            },
+            { 
+                title: "Herramientas de creación de videos", 
+                content: `
+                 <p>Imagínate tener una idea brillante para un video y no saber cómo transformarla en realidad.</p>
+                 <p>Aquí es donde entran en juego herramientas como Dream Machine de Lumalabs (<a href="https://lumalabs.ai/dream-machine" target="_blank">https://lumalabs.ai/dream-machine</a>) 
+                    y SORA de OpenAI, revolucionando la manera en que creamos contenido visual.</p>
+                <p>Con Dream Machine, cualquier persona puede convertirse en un creador de videos de alta calidad 
+                    sin necesidad de conocimientos técnicos avanzados.</p> 
+                    <p>Estás sentado en tu escritorio, visualizando la escena perfecta para tu próximo proyecto. 
+                        Con solo unos clics, Dream Machine toma tus ideas y las convierte en impresionantes secuencias visuales.</p>
+                    <p>Su inteligencia artificial analiza tus conceptos, sugiere efectos especiales y edita automáticamente el video, todo mientras tú te concentras en el aspecto creativo.<p>
+                    `
+            },
+            { 
+                title: "Herramientas de creación de videos", 
+                content: `
+                 <p>Por otro lado, SORA de OpenAI lleva la creación de videos a un nivel aún más avanzado.</p>
+                 <p>Piensa en SORA como un asistente creativo incansable que entiende tus deseos antes de que los expreses por completo.</p>
+                 <p>¿Quieres un video que narre una historia conmovedora? SORA genera guiones, selecciona música de fondo adecuada y crea animaciones que capturan la esencia de tu mensaje. Además, SORA aprende de tus preferencias, haciendo que cada proyecto sea más ajustado a tu estilo único.<p>
+                      `
+            },
+            { 
+                title: "Herramientas de creación de videos", 
+                content: `
+                 <p>Estas herramientas no solo democratizan la producción de videos, sino que también empoderan a creativos de todas las disciplinas.</p>
+                 <p>Ahora, la barrera entre una idea y su realización es más pequeña que nunca, gracias a la inteligencia artificial.</p>
+                 <p>Con Dream Machine y SORA, el poder de la creación está literalmente al alcance de tus manos.</p>
+                     `
+            },
+            { 
+                title: "Herramientas de Creación de audio", 
+                content: `
+                    <p>¿Una melodía suena en tu cabeza y no sabes como llevarla a la realidad?.</p>
+                    <p>Con herramientas como <a href="https://suno.com/" target="_blank">https://suno.com/</a>, 
+                        cualquier persona puede convertirse en un compositor sin necesidad de conocimientos técnicos avanzados.</p> 
+                    <p>Piensa en un momento en que te inspiras por una emoción, un paisaje o un recuerdo.</p>
+                    <p>Con solo describir esa inspiración, Suno utiliza su inteligencia artificial para generar melodías, acordes y ritmos que capturan exactamente lo que tienes en mente.</p>
+                     `
+            },
+            { 
+                title: "Asistentes Virtuales: Siri y Google ok", 
+                content: `
+                <p>Los asistentes virtuales como Siri (Apple) y Asistente de Google en Android son ejemplos de IA en acción en nuestra vida cotidiana.</p>
+                <p>Estos asistentes utilizan IA para entender comandos de voz, realizar tareas como configurar recordatorios, reproducir música, 
+                    e incluso controlar dispositivos inteligentes en nuestros hogares.</p>
+                     `
+            },
+            { 
+                title: " Herramientas de Desarrollo: TensorFlow", 
+                content: `
+                <p>Aunque nos enfocamos en aplicaciones prácticas, es importante mencionar algunas librerías de desarrollo que facilitan la creación de soluciones de IA:</p>
+                <p><strong>TensorFlow:</strong> Desarrollada por Google Brain, es una biblioteca de código abierto que facilita la creación
+                     y el entrenamiento de modelos de aprendizaje automático.</p>
+                <p>Esta biblioteca es ideal para el reconocimiento de imágenes, el procesamiento de lenguaje natural y la predicción de series temporales.</p>
+                <p>Por ejemplo, podés crear un clasificador de imágenes que distingue entre diferentes tipos de animales con solo unas pocas líneas de código.</p>
+                <p>O desarrollar un sistema que analiza sentimientos en redes sociales en tiempo real.</p>
+                <p>Además, TensorFlow facilita la generación de imágenes realistas mediante GANs,
+                    permitiendo innovaciones en la visión por computadora y la creatividad.</p>
+                     `
+            },
+            { 
+                title: " Herramientas de Desarrollo: PyTorch", 
+                content: `
+                <p><strong>PyTorch:</strong> Creada por el laboratorio de investigación de IA de Facebook, es conocida por su facilidad de uso 
+                    y capacidad para trabajar con gráficos computacionales dinámicos.</p>
+                <p>PyTorch es perfecto para la investigación en deep learning y el aprendizaje por transferencia.</p>
+                <p>Es útil para desarrollar nuevas arquitecturas de redes neuronales, adaptar modelos preentrenados y entre otras utilidades, 
+                    construir chatbots que mantienen conversaciones coherentes. También se destaca en el entrenamiento de agentes mediante aprendizaje por refuerzo,
+                     con lo cual por ejemplo podés  entrenar agentes que juegan videojuegos y toman decisiones inteligentes en tiempo real, llevando el aprendizaje por refuerzo a nuevos niveles.</p>
+                     `
+            },
+            { 
+                title: "Reflexión Final", 
+                content: `
+                <p>Las herramientas de IA no son solo programas sofisticados; 
+                    son el futuro. Al dominarlas, no solo aumentas tus habilidades,
+                     sino que también te conviertes en un pionero que puede transformar cualquier industria.</p>
+                <p><strong>¿Estás listo para aceptar el desafío y llevar tu conocimiento al siguiente nivel?</strong></p>
+                     `
+            },
+            { 
+                title: "DESAFIO FINAL", 
+                content: `
+                <p>Llegaste hasta aquí, FELICITACIONES! 👏👏👏</p>
+                <p>Ahora toca mostrar lo que aprendiste, te enfrentarás a un desafio por tiempos,
+                    cada respuesta equivocada te descuenta tu energía que acumulaste. 
+                    <strong>¿Estás listo?</strong> presiona siguiente y a jugar!!!</p>
+                     `
+            }
+        ];
+
+        const quiz = [
+            { question: "¿Cuándo y dónde comenzó oficialmente la historia de la inteligencia artificial?", answers: { A: " En 1960, en el MIT", B: "En 1956, en la Conferencia de Dartmouth", C: "En 1975, en la Universidad de Stanford" }, correct: "B" },
+            { question: "¿Qué herramienta de IA permite a los usuarios dialogar con la inteligencia artificial de manera similar a como lo harían con un amigo en WhatsApp?", answers: { A: "TensorFlow", B: "DALL-E", C: "ChatGPT" }, correct: "C" },
+            { question: "¿Cuál es una de las aplicaciones de ChatGPT en la vida diaria? ", answers: { A: "Creación de contenido para marketing y publicidad", B: "Análisis de datos", C: "Todas las anteriores" }, correct: "C" },
+            { question: "¿Qué herramienta de IA se utiliza para generar imágenes a partir de descripciones textuales? ", answers: { A: "Siri", B: "DALL-E", C: "SORA" }, correct: "B" },
+            { question: "¿Cuál es una recomendación importante al interactuar con herramientas de IA como ChatGPT?",answers: { A: "Siempre confiar en la primera respuesta que te da", B: "Verificar la información con otras fuentes (confiables)", C: "Utilizar solo prompts simples y generales" }, correct: "B" }
+        ];
+        function startTimer() {
+            let timeLeft = timeLimit;
+            document.getElementById('timeLeft').textContent = timeLeft;
+            timer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timeLeft').textContent = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    document.getElementById('result').innerHTML = "⏱️ Tiempo agotado. Respuesta incorrecta.";
+                    // pongo una opción que no existe para que la marque incorrecta
+                    checkAnswer('D')
+                }
+            }, 1000);
+        }
+
+        const pointsPerLesson = 100 / lessons.length; // Incremento proporcional por cada lección
+        const pointsPerQuestion = 100 / quiz.length;
+
+        // Evento para iniciar la aventura después de ingresar el nombre
+        document.getElementById('startAdventure').addEventListener('click', function(e) {
+            e.preventDefault();
+            playerName = document.getElementById('playerName').value;
+            if (playerName.trim() !== '') {
+                document.getElementById('nameForm').style.display = 'none';
+                document.getElementById('adventureContainer').style.display = 'block';
+                displayLesson();
+            } else {
+                alert('Por favor, ingresa tu nombre de Héroe Digital.');
+            }
+        });
+
+        // Muestra el contenido de la lección actual
+        function displayLesson() {
+            const lesson = lessons[currentLesson];
+            document.getElementById('lessonTitle').textContent = lesson.title;
+            document.getElementById('lessonContent').innerHTML = lesson.content;
+        }
+
+        // Incrementa la energía en cada lección
+        document.getElementById('nextLesson').addEventListener('click', function() {
+            energy = Math.min(100, energy + pointsPerLesson); // Incrementa la energía de forma proporcional
+            updateEnergyBar();
+            currentLesson++;
+            if (currentLesson < lessons.length) {
+                displayLesson();
+            } else {
+                document.querySelector('.lesson-card').style.display = 'none';
+                document.querySelector('.quiz').style.display = 'block';
+                displayQuestion();
+                startTimer();
+            }
+        });
+
+        // Verifica la respuesta y actualiza la energía y la puntuación
+        function displayQuestion() {
+            const q = quiz[currentQuestion];
+            document.getElementById('question').innerHTML = `<p>${q.question}</p>`;
+            document.getElementById('answerA').textContent = `A: ${q.answers.A}`;
+            document.getElementById('answerB').textContent = `B: ${q.answers.B}`;
+            document.getElementById('answerC').textContent = `C: ${q.answers.C}`;         
+        }
+        function checkAnswer(answer) {
+            clearInterval(timer);
+            const q = quiz[currentQuestion];
+           document.getElementById('result').innerHTML = "";
+           document.getElementById('timeLeft').textContent ="0";
+            if (answer === q.correct) {
+                score = Math.min(100, score + pointsPerQuestion);
+                answer= `¡Correcto! Has ganado ${pointsPerQuestion} puntos.`
+                
+            } else {
+                // Decrementa la energía por respuesta incorrecta
+                energy = Math.max(0, energy - pointsPerQuestion);
+                answer="Incorrecto."
+            }
+            document.getElementById('result').innerHTML = answer;
+            
+            updateProgressBar();
+            updateEnergyBar();
+            currentQuestion++;
+
+            // Si todas las preguntas han sido respondidas
+            if (currentQuestion < quiz.length) {
+                
+                setTimeout(() => {
+                    document.getElementById('result').innerHTML ="";
+                    displayQuestion();
+                    startTimer();
+                }, 1500);
+                
+               // setTimeout(displayQuestion, 50);
+               // document.getElementById('result').innerHTML ="";
+                //startTimer();
+                
+            } else {
+                    setTimeout(endAdventure, 1500);
+                    }
+        }
+
+ 
+
+        // Finaliza la aventura y muestra el mensaje final
+        function endAdventure() {
+            document.querySelector('.quiz').style.display = 'none';
+            
+            // Si la energía digital es 0%, reinicia el juego
+            if (energy === 0) {
+                document.getElementById('finalMessage').innerHTML =  '🪫¡Te has quedado sin energía! ' + playerName + '  Debes repasar las lecciones.<br> Redirigiéndote al inicio...';
+                setTimeout(() => {
+                    location.reload(); // Recarga la página para empezar de nuevo
+                }, 6000);
+            } else {
+                // Mensaje final basado en la puntuación
+                let message = "";
+                if (score < 50) {
+                    message =  ' 😢 ¡Sigue practicando! '+ playerName +'.El camino a la maestría está lleno de retos. ¡Vuelve a intentarlo!';
+                } else if (score >= 50 && score < 80) {
+                    message = '😐 ¡Lo hiciste bien! '+ playerName +'.Sigue adelante y alcanzarás la maestría. ¡No te detengas!';
+                } else {
+                    message = '😊 ¡Increíble! '+ playerName +' ¡Eres un maestro de la IA! ¡Sigue así y conquistarás el mundo digital!';
+                }
+
+                document.getElementById('finalMessage').innerHTML = message;
+            }
+        }
+
+        // Actualiza visualmente la barra de progreso de puntuación
+        function updateProgressBar() {
+            document.getElementById('progressBar').style.width = `${score}%`;
+            document.getElementById('userScore').textContent = score;
+        }
+
+        // Actualiza visualmente la barra de energía digital
+        function updateEnergyBar() {
+            document.getElementById('energyProgressBar').style.width = `${energy}%`;
+            document.getElementById('userEnergy').textContent = Math.round(energy);
+        }
+    </script>
+</body>
+</html>
